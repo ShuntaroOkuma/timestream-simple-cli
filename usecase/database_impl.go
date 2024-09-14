@@ -2,8 +2,8 @@ package usecase
 
 import (
 	"context"
+	"timestream-simple-cli/marshaller"
 	"timestream-simple-cli/usecase/input"
-	"timestream-simple-cli/utils"
 
 	"github.com/aws/aws-sdk-go-v2/service/timestreamquery"
 	"github.com/aws/aws-sdk-go-v2/service/timestreamwrite"
@@ -42,77 +42,34 @@ func (i *databaseInteractor) DescribeDatabase(
 		return "", err
 	}
 
-	return utils.JsonMarshal(output), nil
-
-	// return output, nil
+	return marshaller.JsonMarshal(output), nil
 }
 
-// func (i *databaseInteractor) ListDatabases(maxResultCount int32) error {
-// 	listDatabasesMaxResult := maxResultCount
-// 	var nextToken *string = nil
+func (i *databaseInteractor) CreateDatabase(
+	ctx context.Context,
+	param *input.CreateDatabase,
+) (string, error) {
+	if err := param.Validate(); err != nil {
+		return "", err
+	}
 
-// 	for ok := true; ok; ok = nextToken != nil {
-// 		listDatabasesInput := &timestreamwrite.ListDatabasesInput{
-// 			MaxResults: &listDatabasesMaxResult,
-// 		}
-// 		if nextToken != nil {
-// 			listDatabasesInput.NextToken = aws.String(*nextToken)
-// 		}
+	var input *timestreamwrite.CreateDatabaseInput
+	if param.KmsKeyId.Valid {
+		input = &timestreamwrite.CreateDatabaseInput{
+			DatabaseName: aws.String(param.DatabaseName),
+			KmsKeyId:     aws.String(param.KmsKeyId.String),
+		}
+	} else {
+		input = &timestreamwrite.CreateDatabaseInput{
+			DatabaseName: aws.String(param.DatabaseName),
+		}
+	}
 
-// 		listDatabasesOutput, err := i.WriteSvc.ListDatabases(ctx, listDatabasesInput)
+	output, err := i.WriteSvc.CreateDatabase(ctx, input)
 
-// 		if err != nil {
-// 			fmt.Println("Error:")
-// 			fmt.Println(err)
-// 			return err
-// 		} else {
-// 			fmt.Println("List databases is successful, below is the output:")
-// 			for _, database := range listDatabasesOutput.Databases {
-// 				printDatabaseDetails(database)
-// 			}
-// 		}
-// 		nextToken = listDatabasesOutput.NextToken
-// 	}
-// 	return nil
-// }
+	if err != nil {
+		return "", err
+	}
 
-// func (i *databaseInteractor) CreateDatabase(databaseName string) error {
-// 	createDatabaseInput := &timestreamwrite.CreateDatabaseInput{
-// 		DatabaseName: aws.String(databaseName),
-// 	}
-// 	createDatabaseOutput, err := i.WriteSvc.CreateDatabase(ctx, createDatabaseInput)
-
-// 	if err != nil {
-// 		var apiErr smithy.APIError
-// 		if errors.As(err, &apiErr) {
-// 			switch apiErr.ErrorCode() {
-// 			case "ResourceNotFoundException":
-// 				fmt.Println("ResourceNotFoundException", apiErr.Error())
-// 			default:
-// 				fmt.Printf("Error: %s", err.Error())
-// 			}
-// 		} else {
-// 			fmt.Printf("Error: %s", err.Error())
-// 		}
-// 	} else {
-// 		fmt.Printf("Database with name %s successfully created : %s\n", databaseName, JsonMarshalIgnoreError(createDatabaseOutput))
-// 	}
-// 	return err
-// }
-
-// func (i *databaseInteractor) UpdateDatabase(databaseName *string, kmsKeyId *string) error {
-// 	updateDatabaseInput := &timestreamwrite.UpdateDatabaseInput{
-// 		DatabaseName: aws.String(*databaseName),
-// 		KmsKeyId:     aws.String(*kmsKeyId),
-// 	}
-
-// 	updateDatabaseOutput, err := i.WriteSvc.UpdateDatabase(ctx, updateDatabaseInput)
-
-// 	if err != nil {
-// 		fmt.Printf("Error: %s", err.Error())
-// 	} else {
-// 		fmt.Printf("Update database is successful")
-// 		printDatabaseDetails(*updateDatabaseOutput.Database)
-// 	}
-// 	return err
-// }
+	return marshaller.JsonMarshal(output), nil
+}

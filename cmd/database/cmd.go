@@ -3,7 +3,7 @@ package database
 import (
 	"fmt"
 	"timestream-simple-cli/dependency"
-	"timestream-simple-cli/utils"
+	"timestream-simple-cli/environment"
 
 	"github.com/caarlos0/env/v10"
 	"github.com/spf13/cobra"
@@ -20,6 +20,7 @@ func NewDatabaseCmd() *cobra.Command {
 		},
 	}
 	cmd.AddCommand(NewDescribeDatabaseCmd())
+	cmd.AddCommand(NewCreateDatabaseCmd())
 	return cmd
 }
 
@@ -28,7 +29,7 @@ func NewDescribeDatabaseCmd() *cobra.Command {
 		Use:   "describe",
 		Short: "describe database",
 		Run: func(cmd *cobra.Command, args []string) {
-			e := &utils.Environment{}
+			e := &environment.Environment{}
 			if err := env.Parse(e); err != nil {
 				panic(err)
 			}
@@ -49,5 +50,35 @@ func NewDescribeDatabaseCmd() *cobra.Command {
 		},
 	}
 	cmd.Flags().StringP("name", "n", "", "database name")
+	return cmd
+}
+
+func NewCreateDatabaseCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "create",
+		Short: "create database",
+		Run: func(cmd *cobra.Command, args []string) {
+			e := &environment.Environment{}
+			if err := env.Parse(e); err != nil {
+				panic(err)
+			}
+
+			ctx := cmd.Context()
+			d := &dependency.Dependency{}
+			d.Inject(ctx, e)
+
+			h := &databaseHandler{
+				databaseInteractor: d.DatabaseInteractor,
+			}
+			result, err := h.CreateDatabase(ctx, cmd)
+			if err != nil {
+				fmt.Printf("database error: %v\n", err)
+				return
+			}
+			fmt.Println("success:", result)
+		},
+	}
+	cmd.Flags().StringP("name", "n", "", "database name")
+	cmd.Flags().StringP("kms-key-id", "k", "", "kms key id")
 	return cmd
 }

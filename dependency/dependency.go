@@ -2,8 +2,9 @@ package dependency
 
 import (
 	"context"
+	"timestream-simple-cli/environment"
+	"timestream-simple-cli/http"
 	"timestream-simple-cli/usecase"
-	"timestream-simple-cli/utils"
 
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/timestreamquery"
@@ -16,9 +17,9 @@ type Dependency struct {
 
 func (d *Dependency) Inject(
 	ctx context.Context,
-	e *utils.Environment,
+	e *environment.Environment,
 ) {
-	httpClient := utils.NewHTTPClient()
+	httpClient := http.NewHTTPClient()
 
 	cfg, _ := config.LoadDefaultConfig(ctx)
 
