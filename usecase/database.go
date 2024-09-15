@@ -14,4 +14,8 @@ type DatabaseInteractor interface {
 		ctx context.Context,
 		param *input.CreateDatabase,
 	) (string, error)
+	UpdateKMS(
+		ctx context.Context,
+		param *input.UpdateKMS,
+	) (string, error)
 }

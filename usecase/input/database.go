@@ -45,3 +45,26 @@ func (p *CreateDatabase) Validate() error {
 	}
 	return nil
 }
+
+type UpdateKMS struct {
+	DatabaseName string `validate:"required"`
+	KmsKeyId     string `validate:"required"`
+}
+
+func NewUpdateKMS(
+	databaseName string,
+	kmsKeyId string,
+) *UpdateKMS {
+
+	return &UpdateKMS{
+		DatabaseName: databaseName,
+		KmsKeyId:     kmsKeyId,
+	}
+}
+
+func (p *UpdateKMS) Validate() error {
+	if err := validation.Validate(p); err != nil {
+		return err
+	}
+	return nil
+}

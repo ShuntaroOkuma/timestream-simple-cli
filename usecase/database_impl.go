@@ -73,3 +73,24 @@ func (i *databaseInteractor) CreateDatabase(
 
 	return marshaller.JsonMarshal(output), nil
 }
+
+func (i *databaseInteractor) UpdateKMS(
+	ctx context.Context,
+	param *input.UpdateKMS,
+) (string, error) {
+	if err := param.Validate(); err != nil {
+		return "", err
+	}
+
+	input := &timestreamwrite.UpdateDatabaseInput{
+		DatabaseName: aws.String(param.DatabaseName),
+		KmsKeyId:     aws.String(param.KmsKeyId),
+	}
+	output, err := i.WriteSvc.UpdateDatabase(ctx, input)
+
+	if err != nil {
+		return "", err
+	}
+
+	return marshaller.JsonMarshal(output), nil
+}

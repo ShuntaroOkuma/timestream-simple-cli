@@ -55,3 +55,28 @@ func (h *databaseHandler) CreateDatabase(ctx context.Context, cmd *cobra.Command
 	}
 	return result, nil
 }
+
+func (h *databaseHandler) UpdateKMS(ctx context.Context, cmd *cobra.Command) (string, error) {
+	databaseName, err := cmd.Flags().GetString("name")
+	if err != nil {
+		return "", err
+	}
+
+	KmsKeyId, err := cmd.Flags().GetString("kms-key-id")
+	if err != nil {
+		return "", err
+	}
+
+	if databaseName == "" && KmsKeyId == "" {
+		return "", errors.Errorf("at least one of params is required")
+	}
+
+	result, err := h.databaseInteractor.UpdateKMS(ctx, input.NewUpdateKMS(
+		databaseName,
+		KmsKeyId,
+	))
+	if err != nil {
+		return "", err
+	}
+	return result, nil
+}
