@@ -1,9 +1,9 @@
 package input
 
 import (
+	"timestream-simple-cli/pkg/nullable"
 	"timestream-simple-cli/pkg/validation"
-
-	"github.com/volatiletech/null/v8"
+	"timestream-simple-cli/types"
 )
 
 type DescribeDatabase struct {
@@ -25,17 +25,16 @@ func (p *DescribeDatabase) Validate() error {
 
 type CreateDatabase struct {
 	DatabaseName string `validate:"required"`
-	KmsKeyId     null.String
+	Tags         nullable.Type[types.Tags]
 }
 
 func NewCreateDatabase(
 	databaseName string,
-	kmsKeyId null.String,
+	tags nullable.Type[types.Tags],
 ) *CreateDatabase {
-
 	return &CreateDatabase{
 		DatabaseName: databaseName,
-		KmsKeyId:     kmsKeyId,
+		Tags:         tags,
 	}
 }
 

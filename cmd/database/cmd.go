@@ -80,7 +80,7 @@ func NewCreateDatabaseCmd() *cobra.Command {
 		},
 	}
 	cmd.Flags().StringP("name", "n", "", "database name")
-	cmd.Flags().StringP("kms-key-id", "k", "", "kms key id")
+	cmd.Flags().StringP("tags", "t", "", "tags")
 	return cmd
 }
 
