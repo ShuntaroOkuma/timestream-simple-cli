@@ -15,6 +15,7 @@ import (
 
 type Dependency struct {
 	DatabaseInteractor usecase.DatabaseInteractor
+	TableInteractor    usecase.TableInteractor
 }
 
 func (d *Dependency) Inject(
@@ -49,5 +50,9 @@ func (d *Dependency) Inject(
 		kmsSvc,
 		writeSvc,
 		querySvc,
+	)
+
+	d.TableInteractor = usecase.NewTableInteractor(
+		writeSvc,
 	)
 }

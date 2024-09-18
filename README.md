@@ -2,14 +2,17 @@
 
 - This is a sample to operate TimeStream with AWS SDK for Go v2
 
+- You can use both AWS and LocalStack
+
 - References
   - TimeStream Official
     - [Amazon Timestream](https://docs.aws.amazon.com/timestream/latest/developerguide/what-is-timestream.html)
+    - [LocalStack TimeStream](https://docs.localstack.cloud/user-guide/aws/timestream/)
   - GitHub
     - [aws-sdk-go-v2](https://github.com/aws/aws-sdk-go-v2)
     - [sample_apps/goV2](https://github.com/awslabs/amazon-timestream-tools/tree/mainline/sample_apps/goV2)
 
-## Preparation
+## Preparation for AWS
 
 - Add SDK
 
@@ -40,12 +43,20 @@ direnv allow
 
 [direnv](https://github.com/direnv/direnv)
 
+## Preparation for LocalStack
+
+- Install LocalStack
+
+```bash
+pip install localstack
+```
+
 ## Build
 
 - build
 
   ```bash
-  go build -o ./.bin/tt ./
+  make build
   ```
 
 - set PATH
@@ -63,23 +74,11 @@ direnv allow
 ## Describe Database
 
 ```bash
-tt database describe -n "sampleDB"
+ts database describe -n sampleDB
 ```
 
-## List Databases
+## Describe Table
 
 ```bash
-
-```
-
-## Update Database
-
-```bash
-
-```
-
-## Delete Database
-
-```bash
-
+ts table describe -d sampleDB -t sampleTable
 ```

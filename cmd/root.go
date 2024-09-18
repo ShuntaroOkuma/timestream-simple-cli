@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"timestream-simple-cli/cmd/database"
+	"timestream-simple-cli/cmd/table"
 
 	"github.com/spf13/cobra"
 )
@@ -18,5 +19,6 @@ func NewCmdRoot() *cobra.Command {
 		},
 	}
 	cmd.AddCommand(database.NewDatabaseCmd())
+	cmd.AddCommand(table.NewTableCmd())
 	return cmd
 }
