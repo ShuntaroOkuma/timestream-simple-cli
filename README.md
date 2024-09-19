@@ -82,3 +82,10 @@ ts database describe -n sampleDB
 ```bash
 ts table describe -d sampleDB -t sampleTable
 ```
+
+## Generate Sample Data
+
+```bash
+ts preset data -t home > ./sample/home.json
+ts preset data -t building > ./sample/building.json
+```

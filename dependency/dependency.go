@@ -16,6 +16,8 @@ import (
 type Dependency struct {
 	DatabaseInteractor usecase.DatabaseInteractor
 	TableInteractor    usecase.TableInteractor
+	DataInteractor     usecase.DataInteractor
+	PresetInteractor   usecase.PresetInteractor
 }
 
 func (d *Dependency) Inject(
@@ -55,4 +57,10 @@ func (d *Dependency) Inject(
 	d.TableInteractor = usecase.NewTableInteractor(
 		writeSvc,
 	)
+
+	d.DataInteractor = usecase.NewDataInteractor(
+		writeSvc,
+	)
+
+	d.PresetInteractor = usecase.NewPresetInteractor()
 }

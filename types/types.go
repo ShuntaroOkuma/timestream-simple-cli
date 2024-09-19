@@ -6,3 +6,10 @@ type Tag struct {
 }
 
 type Tags []Tag
+
+type SampleDataType string
+
+const (
+	SampleDataTypeHome     SampleDataType = "home"
+	SampleDataTypeBuilding SampleDataType = "building"
+)
