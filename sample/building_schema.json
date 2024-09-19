@@ -1,0 +1,26 @@
+{
+  "dimensions": [
+    {
+      "name": "BuildingID",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "FloorNumber",
+      "type": "VARCHAR"
+    }
+  ],
+  "measures": [
+    {
+      "name": "PowerConsumption",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "CO2Level",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "LightLevel",
+      "type": "DOUBLE"
+    }
+  ]
+}

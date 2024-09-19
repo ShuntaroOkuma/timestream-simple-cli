@@ -1,0 +1,26 @@
+{
+  "dimensions": [
+    {
+      "name": "DeviceID",
+      "type": "VARCHAR"
+    },
+    {
+      "name": "Location",
+      "type": "VARCHAR"
+    }
+  ],
+  "measures": [
+    {
+      "name": "Temperature",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "Humidity",
+      "type": "DOUBLE"
+    },
+    {
+      "name": "Pressure",
+      "type": "DOUBLE"
+    }
+  ]
+}
