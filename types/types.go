@@ -15,16 +15,17 @@ const (
 )
 
 type Schema struct {
-	Dimensions []Dimension `json:"dimensions"`
-	Measures   []Measure   `json:"measures"`
+	Dimensions       []Dimension `json:"dimensions" validate:"required,min=1,max=128"`
+	Measures         []Measure   `json:"measures" validate:"required,min=1"`
+	MultiMeasureName string      `json:"multiMeasureName"`
 }
 
 type Dimension struct {
-	Name string `json:"name"`
+	Name string `json:"name" validate:"required,min=1,max=60"`
 	Type string `json:"type" validate:"eq=VARCHAR"`
 }
 
 type Measure struct {
-	Name string `json:"name"`
-	Type string `json:"type" validate:"eq=DOUBLE|eq=BIGINT|eq=BOOLEAN|eq=VARCHAR|eq=TIMESTAMP"`
+	Name string `json:"name" validate:"required,min=1,max=256"`
+	Type string `json:"type" validate:"required,eq=DOUBLE|eq=BIGINT|eq=BOOLEAN|eq=VARCHAR|eq=TIMESTAMP|eq=MULTI"`
 }

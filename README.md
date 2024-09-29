@@ -89,3 +89,9 @@ ts table describe -d sampleDB -t sampleTable
 ts preset data -t home > ./sample/home.json
 ts preset data -t building > ./sample/building.json
 ```
+
+## Write Data into Table
+
+```bash
+ts data write -d sampleDB -t sampleTable -s ./sample/home_schema.json -v ./sample/home.json
+```
